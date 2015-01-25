@@ -1,0 +1,137 @@
+<div id="modal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h3 class="lead">Asian Rice and Population Statistics Tutorial</h3>
+			</div>
+
+			<div id="0" class="modal-body" style="display:none">
+
+				<p>
+					This application is very simple. When you
+					participate, the platform will load a scanned table of statistical
+					data referring either to agricultural production or to human
+					census records
+					for different regions of southern and eastern Asia during the
+					1920s and 1930s. Once the image has been loaded, you will be asked
+					to transcribe the contents of the table(s) you see in the image. Any further
+					information can be placed in the top row, the bottom row or an
+					extra final column. An example portion of an Indian census table is provided below.
+				</p>
+
+				<img src="http://micropasts-ricepops.s3.amazonaws.com/censusexample.png" class="img-polaroid"
+				alt="An example of a census table" width="230" height="243"/>
+			</div>
+			<div id="1" class="modal-body" style="display:none">
+				<p>
+					Some further bits of guidance as you transcribe:
+					<ul>
+						<li>
+							When the table is first loaded, you will be prompted to define the correct number of total columns in the loaded table, so please check this carefully. We suggest that you add an extra column to the total number of observed columns and use it
+							for passing on your own
+							comments (e.g. if the observable table
+							has 4 columns, stipulate 5 columns and use the
+							last one for your own remarks).
+						</li>
+						<li>
+							Please enter all the text headings, captions and numbers that you see associated with the table.
+							You can transcribe the table title or caption
+							into either the top or bottom row of your spreasheet, after you have entered the table. The only
+							items that you do not need to transcribe are book page numbers
+							or paragraphs of extra text that happen to be part of the scanned page but are not directly related to the table.
+						</li>
+						<li>
+							The number of rows will expand as you type. Please do not worry if you leave a blank final row.
+						</li>
+						<li>
+							Sometimes inputs into a particular cell of the table can get complicated.
+							A good example is the adjacent image in which 'Regentschap', 'Regency',
+							a brace symbol and 'PANDEGLANG' are all lumped together. In such situations,
+							we would prefer this entered in a single cell, with the words separated by a "[;]",
+							so in this case: "Regentschap[;]Regency[;]PANDEGLANG". Please igore curly braces and
+							any similarly complex and largely ornamental notation unless you feel it is crucial for the meaning.
+						</li>
+					</ul>
+				</p>
+				<img src="http://micropasts-ricepops.s3.amazonaws.com/rowmessexample.png" class="img-polaroid"
+				alt="An example of a complicated row" width="300" height="130"/>
+			</div>
+
+			<div id="2" class="modal-body" style="display:none">
+				<p>
+					Some further bits of guidance (continued):
+					<ul>
+						<li>
+							If you have a heading or another piece of text which seems to span several columns,
+							place the text in the first column and leave the others blank.
+							For example, in the image below, three columns have been used, 
+							(with an extra where the blue outline is left blank for contributor comments). 
+							In the first row, "Totaal - Total" has been placed the first cell and
+							the other two cells have been left blank.
+						</li>
+						<li>
+							If a word is hard to decipher, do you best to identify it
+							and make a comment in your extra column to note
+							the problem.
+						</li>
+						<li>
+							Please do not translate anything
+							(e.g. don't translate Dutch into English), just
+							transcribe it, and retain the case of the word as it was originally written.
+						</li>
+						<li>
+							If two or more
+							tables are present in the same image, then skip a line and
+							continue transcribing the next table.
+						</li>
+						<li>
+							If you find it easier, you can transcribe into
+							an offline spreadsheet and then copy-and-paste
+							the results into the online table in one go. However, bear in mind that
+							a delay in submitting the online table
+							might then mean that other
+							contributors complete this task before you do and
+							thereby make your efforts unnecessary!
+						</li>
+					</ul>
+					<img src="http://micropasts-ricepops.s3.amazonaws.com/colspanexample.png" class="img-polaroid"
+					alt="An example of an entry spanning several possible columns" width="531" height="118"/>
+				</p>
+			</div>
+
+			<div class="modal-footer">
+				<a id="prevBtn" href="#" onclick="showStep('prev')" class="btn btn-default">Previous</a>
+				<a id="nextBtn" href="#" onclick="showStep('next')" class="btn btn-success">Next</a>
+				<a id="startContrib" href="../ricepops1/newtask" class="btn btn-primary" style="display:none"><i class="glyphicon glyphicon-thumbs-up"></i> Let's start!</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var step = -1;
+	function showStep(action) {
+		$("#" + step).hide();
+		if (action == 'next') {
+			step = step + 1;
+		}
+		if (action == 'prev') {
+			step = step - 1;
+		}
+		if (step == 0) {
+			$("#prevBtn").hide();
+		} else {
+			$("#prevBtn").show();
+		}
+
+		if (step == 2) {
+			$("#nextBtn").hide();
+			$("#startContrib").show();
+		}
+		$("#" + step).show();
+	}
+
+	showStep('next');
+	$("#modal").modal('show'); 
+</script>
