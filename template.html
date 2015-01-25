@@ -291,9 +291,10 @@ task.
 						<li>
 							If two or more
 							tables are present in the same image, then skip a line and
-							continue transcribing the next table. If only part of a table is visible,
-							move the image around to check this is definitely the case, but then input
-							the data in wholly visible columns and rows only (some big tables are split and will recombined them later).
+							continue transcribing the next table. 
+							Occasionally, we have cut very large tables into pieces in order to make each peice a separate task. 
+							So if you can only see part of a table (and have checked the downloadable file to confirm this), 
+							then please just do your best to transcribe the portion you can see.
 						</li>
 						<li>
 							If you find it easier, you can transcribe into
@@ -362,18 +363,18 @@ task.
 <!-- Main Pybossa functions -->
 <script>
 	function loadUserProgress() {
-		pybossa.userProgress('ricepops1').done(function(data) {
+		pybossa.userProgress('ricepops2').done(function(data) {
 			console.log(data);
 			console.log("Total answers done for user: " + data.done);
-			if ((data.done == 1) && ($.cookie('surveyricepops1') === undefined)) {
+			if ((data.done == 1) && ($.cookie('surveyricepops2') === undefined)) {
 				$("#survey").modal('show');
-				$.cookie('surveyricepops1', 'shown', {
+				$.cookie('surveyricepops2', 'shown', {
 					path : '/'
 				});
 			}
-			if ((data.done == 25) && ($.cookie('survey25ricepops1') === undefined)) {
+			if ((data.done == 25) && ($.cookie('survey25ricepops2') === undefined)) {
 				$("#survey25").modal('show');
-				$.cookie('survey25ricepops1', 'shown', {
+				$.cookie('survey25ricepops2', 'shown', {
 					path : '/'
 				});
 			}
@@ -515,7 +516,7 @@ task.
 	});
 
 	if (Modernizr.borderradius) {
-		pybossa.run('ricepops1');
+		pybossa.run('ricepops2');
 	} else {
 		$(".skeleton").hide();
 		$("#oldbrowser").show();
