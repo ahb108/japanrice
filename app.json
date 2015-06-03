@@ -1,7 +1,7 @@
 {
-    "name": "Rice and Population in Asia: Part 2",
-    "short_name": "ricepops2",
-    "thumbnail": "http://micropasts-ricepops.s3.amazonaws.com/ricepops2.png",
-    "description": "Help us gather rice agriculture statistics and census data from early 20th century Asia.",
+    "name": "Rice and Population in Asia: Japan's rice (1883-1954)",
+    "short_name": "japanrice",
+    "thumbnail": "http://micropasts-other.s3.amazonaws.com/other/japanrice_thumb.png",
+    "description": "Help us gather rice agriculture statistics from late 19th and early 20th century Japan.",
     "question": "Help us to transcribe the following table for academic use"
 }
