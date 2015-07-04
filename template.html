@@ -355,41 +355,23 @@ task.
 			$('#task-id').html(task.id);
 			$("#img_" + task.id).show();
 
-			$(".btn-submit").off('click').on('click', function() {
-				var btn = $(this).attr("id");
-				if (btn == "btnNcolumns") {
-					$("#step1").toggle();
-					$("#step2").toggle();
-					var nColumns = parseInt($("#nColumns").val());
-					if (nColumns != 0) {
-						$('#data-table').handsontable({
-							startRows : 1,
-							startCols : nColumns,
-							minSpareRows : 1,
-							colHeaders : true,
-							contextMenu : true
-						});
-					}
-					// No table, so load next page
-					else {
-						pybossa.saveTask(task.id, "noTable").done(function(data) {
-							$("#img_" + task.id).hide();
-							deferred.resolve();
-							$("#success").fadeIn();
-							setTimeout(function() {
-								$("#success").fadeOut()
-							}, 2000);
-						});
-					}
-				} else {
-					var handsontable = $("#data-table").data('handsontable');
-					var answer = handsontable.getData();
-					pybossa.saveTask(task.id, answer).done(function(data) {
-						$("#img_" + task.id).hide();
-						deferred.resolve();
-						$("#success").fadeIn(500).fadeOut(2500);
-					})
-				}
+                var data = [[]];
+                var config = {
+                data: data,
+                minRows: 6,
+                minCols: 7,
+                minSpareRows: 1,
+                minSpareCols: 0,
+                maxRows: 20,
+                autoWrapRow: true,
+                autoWrapCol: true,
+                autoColumnSize: true,
+                colHeaders: ['ID', 'Date', 'Description', 'Length (in inches)', 'Width (in inches)', 'Weight (in pounds.)', 'Weight (in ounces)'],
+                contextMenu: ['row_below', 'remove_row', 'undo', 'redo'],
+                stretchH: 'all'
+                };
+                $("#data-table").handsontable(config);
+                
 			});
 		} else {
 			$(".skeleton").hide();
