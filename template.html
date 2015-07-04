@@ -39,65 +39,6 @@
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.12.3/handsontable.full.min.js" type="text/javascript"></script>
 
-<!-- Task 1 survey modal -->
-<div id="survey" class="modal fade" data-backdrop="static">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title">Do you want to help us further?</h4>
-			</div>
-			<div class="modal-body">
-				<p>
-					Thank you for contributing one task to this kind of application on the site.
-					We are interested in knowing how you found out about us.
-				</p>
-				<p>
-					Could you please answer two questions in a short survey?
-				</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					Skip
-				</button>
-				<a class="btn btn-large btn-success" href="https://docs.google.com/forms/d/1mOgWbg7WH41u1EnNHXN-_m8bTbqjZ_kHqhM-mUwkhG8/viewform?embedded=true">Of course! Take me to the survey!</a>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- End of task 1 survey modal -->
-
-<!-- Follow-up survey modal -->
-<div id="survey25" class="modal fade" data-backdrop="static">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title"> Congratulations! You have completed 25 tasks! </h4>
-			</div>
-			<div class="modal-body">
-				<p>
-					Thank you for contributing 25 tasks for the project. Now that you
-					have been using MicroPasts for a while, we would like to know how
-					you found it.
-				</p>
-				<p>
-					Could you please answer a few questions in a short survey?
-				</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					Skip
-				</button>
-				<a class="btn btn-large btn-success" href="https://docs.google.com/forms/d/1xXHd8TPkGIZWi_xs3HdJsZ3dsH2khC_j_QbrRyLrVsE/viewform?embedded=true">Of course! Take me to the survey!</a>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- End of follow-up survey modal -->
-
 <!-- Success and error messages for user -->
 <div style="display:none;margin-top:15px; height:500px;" id="oldbrowser" class="row">
 	<div  class="col-md-8 col-md-offset-1 alert alert-info">
@@ -152,22 +93,6 @@ task.
 <div class="row skeleton">
 	<h1 id="start"> Please transcribe the data table(s) you see in this image. <br>スキャン画像の表に書かれた値を以下の空白セルに転記してください。</h1>
 
-	<!-- Question and Submission div -->
-	<div id="step1">
-		<h5>First estimate the number of columns (of both text and numbers) in the table below. <br>
-			以下の表の列数（文字列と数値の両方について）を数えてください。
-		<br>
-		Add extra columns if in doubt, and also add an extra final column for your comments. <br>
-		不確かな場合には列数を余分に数え、さらに、コメントを記入するための列を列数に加えて下さい。</h5>
-		<span class="label label-info"><i class="icon icon-bullhorn"></i>Note:</span> Type the number of columns here (and an empty table will then appear): <br>
-		列数をここに記入してください（空の表が表示されます）。
-		<input id="nColumns">
-		</input>
-		<button id="btnNcolumns" class="btn btn-submit">
-			Next
-		</button>
-	</div>
-	<!-- End of Question and Submission div -->
 	<div id="step2">
 		<h5>Transcribe the table shown in the scanned image into the empty cells below. <br>
 			この画像の表のデータを転記してください。
@@ -416,8 +341,8 @@ task.
 	pybossa.presentTask(function(task, deferred) {
 		if (!$.isEmptyObject(task)) {
 			loadUserProgress();
-			$("#step1").show();
-			$("#step2").hide();
+			$("#step2").show();
+			$("#step1").hide();
 			$("#viewport_" + task.id).show();
 			$("#nColumns").val("");
 			$("a#raw").attr("href", task.info.url_o);
