@@ -14,67 +14,39 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with PyBOSSA.  If not, see <http://www.gnu.org/licenses/>.
-
-import urllib
-import urllib2
-import re
-import json
-import string
-import requests
+import boto
+from boto.s3.connection import S3Connection
+from boto.s3.key import Key
+import sys
 try:
-    import config
+    import s3_settings
 except:
-    print "You need to create a config.py file (see config.py.template)"
+    print ("There should be a s3_settings.py file with the name \
+           of the bucket with the photos.")
 
-def get_flickr_set_photos(set_id):
-    """Get public photos from a Flickr set_id and return a list."""
-    url = 'https://api.flickr.com/services/rest/'
-    page = 1
-    payload = dict(
-        method='flickr.photosets.getPhotos',
-        api_key=config.flickr_api_key,
-        photoset_id=set_id,
-        extras='original_format',
-        format='json',
-        page=page,
-        nojsoncallback=1)
+def allowed_file(filename):
+    return '.' in filename and \
+              filename.rsplit('.', 1)[1] in s3_settings.ALLOWED_EXTENSIONS
 
-    # Get the first batch of photos in the the photoset
-    res = requests.get(url, params=payload)
-    # Convert it to JSON
-    data = json.loads(res.text)
-    # Initiate the list of photos to return
+
+def get_s3_photos(folder):
+    """
+    Get photos from S3 bucket.
+
+    :returns: A list of photos.
+    :rtype: list
+
+    """
+    conn = S3Connection(s3_settings.ACCESS_KEY, s3_settings.SECRET)
+    bucket = conn.get_bucket(s3_settings.BUCKET)
+    rs = bucket.list(s3_settings.FOLDER)
     photos = []
-    # If there are no errors, then proceed
-    if res.status_code == 200 and 'photoset' in data.keys():
-        # Get the owner name to create the photo link page
-        owner_name = data['photoset']['ownername']
-        # Get the total number of photos in this set
-        n_photos = int(data['photoset']['total'])
-        # Use a while loop for looping through all the available photos
-        # in the set. By default Flickr returns 500 pictures per page
-        while 'photoset' in data.keys():
-            for photo in data['photoset']['photo']:
-                direct_link = "https://farm%s.staticflickr.com/%s/%s_%s" % (
-                    photo['farm'], photo['server'],
-                    photo['id'], photo['secret'])
-                original_link = "https://farm%s.staticflickr.com/%s/%s_%s" % (
-                    photo['farm'], photo['server'],
-                    photo['id'], photo['originalsecret'])
-                link = 'https://www.flickr.com/photos/%s/%s' % (
-                    owner_name, photo['id'])
-                tmp = dict(url_m=direct_link + "_m.jpg",
-                           url_o=original_link + "_o.jpg",
-                           link=link + "/sizes/l/")
-                photos.append(tmp)
-            payload['page'] += 1
-            res = requests.get(url, params=payload)
-            data = json.loads(res.text)
-        if len(photos) == n_photos:
-            return photos
-        else:
-            print "Something went wrong! Different number of photos %s != %s" % (len(photos), n_photos)
-            return []
-    else:
-        print "Something went wrong"
-        print "ERROR: [%s]: %s" % (res.status_code, res.text)
+    for photo in rs:
+        if allowed_file(photo.name.lower()):
+            link = dict(
+                url_b="http://" + s3_settings.BUCKET + ".s3.amazonaws.com/" + photo.name
+            )
+            print(link)
+            photos.append(link)
+
+    return photos

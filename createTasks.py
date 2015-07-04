@@ -19,11 +19,11 @@
 import json
 from optparse import OptionParser
 import pbclient
-from get_images import get_flickr_set_photos
+from get_images import get_s3_photos
 import random
 import logging
-import time
 from requests import exceptions
+from time import sleep
 
 
 def contents(filename):
@@ -42,11 +42,6 @@ def handle_arguments():
     parser.add_option("-k", "--api-key", dest="api_key",
                       help="PyBossa User API-KEY to interact with PyBossa",
                       metavar="API-KEY")
-    # Flickr Photoset ID
-    parser.add_option("-i", "--id", dest="photoset_id",
-                      help="Flickr Photoset ID to import",
-                      metavar="PHOTOSET-ID")
-
     # Create App
     parser.add_option("-c", "--create-app", action="store_true",
                       dest="create_app",
@@ -70,15 +65,20 @@ def handle_arguments():
                       help="Add more tasks",
                       metavar="ADD-MORE-TASKS")
 
+    # S3 Bucket folder
+    parser.add_option("-b", "--s3-bucket", dest="s3_bucket_folder",
+                      help="S3 Bucket folder to get pictures/photos",
+                      metavar="S3-BUCKET-FOLDER")
+
+
     # Modify the number of TaskRuns per Task
-    # (default 2)
-    # Changed default to 2 on the 19th August
+    # (default 30)
     parser.add_option("-n", "--number-answers",
                       type="int",
                       dest="n_answers",
                       help="Number of answers per task",
                       metavar="N-ANSWERS",
-                      default=2)
+                      default=3)
 
     parser.add_option("-a", "--application-config",
                       dest="app_config",
@@ -141,8 +141,6 @@ def run(app_config, options):
     def setup_app():
         app = find_app_by_short_name()
         app.long_description = contents('long_description.html')
-        app.category_id = 5
-        app.hidden = 1
         app.info['task_presenter'] = contents('template.html')
         app.info['thumbnail'] = app_config['thumbnail']
         app.info['tutorial'] = contents('tutorial.html')
@@ -166,19 +164,14 @@ def run(app_config, options):
     def add_photo_tasks(app):
         # First of all we get the URL photos
         # Then, we have to create a set of tasks for the application
-        # For this, we get first the photo URLs from Flickr
-        photos = get_flickr_set_photos(options.photoset_id)
+        # For this, we get first the photo URLs from S3
+        photos = get_s3_photos(options.s3_bucket_folder)
         question = app_config['question']
         #[create_photo_task(app, p, question, priority=random.random()) for p in photos]
-        # Estimate how many minutes it has to wait before reaching the limit
-        # Limit is 300 tasks per 15 minutes
-        wait = (15 * 60) / 300
-        if len(photos) > 300:
-            wait = wait + 1 # Adding one second will take 20 minutes to add 300 tasks
-        print "Wait %s seconds between each create_task request" % wait
         for p in photos:
-            create_photo_task(app, p, question, priority=0)
-            time.sleep(wait)
+            create_photo_task(app, p, question)
+            print "Creating task..."
+            sleep(4)
 
     pbclient.set('api_key', options.api_key)
     pbclient.set('endpoint', options.api_url)
@@ -188,19 +181,22 @@ def run(app_config, options):
         print('Using API-KEY: %s' % options.api_key)
 
     if options.create_app or options.add_more_tasks:
-        if options.create_app:
-            try:
-                response = pbclient.create_app(app_config['name'],
-                                               app_config['short_name'],
-                                               app_config['description'])
+        if options.s3_bucket_folder:
+            if options.create_app:
+                try:
+                    response = pbclient.create_app(app_config['name'],
+                                                   app_config['short_name'],
+                                                   app_config['description'])
 
-                check_api_error(response)
-                app = setup_app()
-            except:
-                format_error("pbclient.create_app", response)
+                    check_api_error(response)
+                    app = setup_app()
+                except:
+                    format_error("pbclient.create_app", response)
+            else:
+                app = find_app_by_short_name()
+            add_photo_tasks(app)
         else:
-            app = find_app_by_short_name()
-        add_photo_tasks(app)
+            parser.error("Please check --help or -h for the available options")
 
     if options.update_template:
         print "Updating app template"
