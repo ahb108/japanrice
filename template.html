@@ -1,482 +1,377 @@
-<!-- Stylesheets -->
-<link rel="stylesheet" href="/static/css/ol.css" type="text/css">
-<link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.12.3/handsontable.full.min.css">
-<link rel="stylesheet" href="/static/vendor/fancybox/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
-<style type="text/css">
-	.ui-autocomplete {
-		background-color: white;
-		width: 300px;
-		border: 1px solid #cfcfcf;
-		list-style-type: none;
-		padding-left: 0px;
-	}
-	label {
-		font-size: 16px;
-	}
-	#map_canvas label {
-		width: auto;
-		display: inline;
-	}
-	#map_canvas img {
-		max-width: none;
-	}
-	#imgContainer {
-		height: 390px;
-		width: 600px;
-	}
-	#map {
-		height: 400px;
-		width: 100%;
-	}
-</style>
-
-<!-- Main scripts -->
-<script src="/static/js/ol.js" type="text/javascript"></script>
+<!-- Add scripts etc -->
+<script src="https://code.jquery.com/ui/1.8.1/jquery-ui.min.js" type="text/javascript"
+        xmlns="http://www.w3.org/1999/html"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.12.6/handsontable.full.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.2.1/ol.min.js" type="text/javascript"></script>
 <script src="/static/js/vendor/jquery.serializeJSON.min.js" type="text/javascript"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min.js" type="text/javascript"></script>
 <script src="/static/vendor/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
-<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.12.3/handsontable.full.min.js" type="text/javascript"></script>
 
-<!-- Task 1 survey modal -->
-<div id="survey" class="modal fade" data-backdrop="static">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title">Do you want to help us further?</h4>
-			</div>
-			<div class="modal-body">
-				<p>
-					Thank you for contributing one task to this kind of application on the site.
-					We are interested in knowing how you found out about us.
-				</p>
-				<p>
-					Could you please answer two questions in a short survey?
-				</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					Skip
-				</button>
-				<a class="btn btn-large btn-success" href="https://docs.google.com/forms/d/1mOgWbg7WH41u1EnNHXN-_m8bTbqjZ_kHqhM-mUwkhG8/viewform?embedded=true">Of course! Take me to the survey!</a>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- End of task 1 survey modal -->
+<!-- Add style sheets -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.2.1/ol.css" type="text/css">
+<link rel="stylesheet" href="/static/vendor/fancybox/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen"/>
+<link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.12.6/handsontable.full.min.css">
 
-<!-- Follow-up survey modal -->
-<div id="survey25" class="modal fade" data-backdrop="static">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title"> Congratulations! You have completed 25 tasks! </h4>
-			</div>
-			<div class="modal-body">
-				<p>
-					Thank you for contributing 25 tasks for the project. Now that you
-					have been using MicroPasts for a while, we would like to know how
-					you found it.
-				</p>
-				<p>
-					Could you please answer a few questions in a short survey?
-				</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					Skip
-				</button>
-				<a class="btn btn-large btn-success" href="https://docs.google.com/forms/d/1xXHd8TPkGIZWi_xs3HdJsZ3dsH2khC_j_QbrRyLrVsE/viewform?embedded=true">Of course! Take me to the survey!</a>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- End of follow-up survey modal -->
 
-<!-- Success and error messages for user -->
+<!-- Browser not compatible message -->
 <div style="display:none;margin-top:15px; height:500px;" id="oldbrowser" class="row">
-	<div  class="col-md-8 col-md-offset-1 alert alert-info">
-		<h2> Browser problems! </h2>
-		<p>
-			Sorry, but your browser does not support the current application.
-			If you want to contribute, please, upgrade to a modern web browser
-			like the open source and free alternative
-			<a href="http://www.mozilla.org/en-US/firefox/new/">Firefox</a> or <a href="https://www.google.com/intl/en/chrome/browser/">Chrome</a>.
-		</p>
-	</div>
-</div>
+    <!-- Success and Error Messages for the user -->
+    <div  class="col-md-8 col-md-offset-1 alert alert-info">
+        <strong>Sorry, but your browser does not support the current application. If you want to contribute, please,
+            upgrade to a modern web browser like the open source and free alternative
+            <a href="http://www.mozilla.org/en-US/firefox/new/">Firefox</a> or <a href="https://www.google.com/intl/en/chrome/browser/">Chrome</a></strong>.
+    </div>
+</div> <!-- End of Row -->
+<!-- end of browser -->
 
+<!-- Start of messages -->
 <div style="margin-top:15px;">
-	<div id="success" class="alert alert-success" style="display:none;">
-		<strong>Well done!</strong> You have successfully submitted your transcription. Here is another to try if you wish!
-	</div>
-	<div id="loading" class="alert alert-info" style="display:none;">
-		<img src="/static/img/loading.gif">Loading next task...
-	</div>
-	<div id="taskcompleted" class="alert alert-info" style="display:none;">
-		<strong>The task has been completed,</strong> thanks a lot!
-	</div>
-	<div id="finish" class="alert alert-success" style="display:none;">
-		<h2> Congratulations! </h2>
-		<p>
-			You have participated in <strong>all</strong> available tasks. Thank you for your interest and help.
-		</p>
-		<br/>
-		<img src="https://crowdfunded.micropasts.org/assets/logo-head.png" width="200" height="200"/>
-		<div class="alert-actions">
-			<a class="btn-default btn" href="/">Go back</a>
-			<a class="btn-default btn" href="/app">or, Check other applications</a>
-		</div>
-	</div>
-
-	<div id="error" class="alert alert-error" style="display:none;">
-		<a class="close">X.</a>
-		<strong>Error!</strong> Something went wrong, please contact the site
-		administrators via the forum, Twitter, email or our Facebook page.
-	</div>
+    <div id="success" class="alert alert-success" style="display:none;">
+        <strong>Well done!</strong> You have successfully submitted your transcription. Here is another to try if you wish!
+    </div>
+    <div id="loading" class="alert alert-info" style="display:none;">
+        <img src="/static/img/loading.gif">Loading next task...
+    </div>
+    <div id="taskcompleted" class="alert alert-info" style="display:none;">
+        <strong>The task has been completed!</strong> Thanks a lot!
+    </div>
+    <div id="finish" class="alert alert-success" style="display:none;">
+        <h2>Congratulations!</h2>
+          <p>
+              You have participated in all available tasks!
+          </p>
+          <img src="https://crowdfunded.micropasts.org/assets/logo-head.png"
+               height="200" width="200" alt="The MicroPasts Square Logo"/>
+          <div class="alert-actions">
+             <a class="btn-default btn" href="/">Go back to the home page</a>
+             <a class="btn-default btn" href="/app">or, have a look at our
+                 other applications</a>
+          </div>
+    </div>
+    <div id="error" class="alert alert-error" style="display:none;">
+        <a class="close">×</a>
+        <strong>Error!</strong> Something went wrong, please contact the site administrators
+    </div>
 </div>
-<!-- End of success and error messages for user -->
+<!-- End Success and Error Messages for the user -->
+
+
 
 <!--
-Task DOM for loading the Flickr Images
-It uses the class="skeleton" to identify the elements that belong to the
-task.
+    Task DOM for loading the S3 Images
+    It uses the class="skeleton" to identify the elements that belong to the
+    task.
 -->
-
-<!-- Start Skeleton Row-->
-<div class="row skeleton">
-	<h1 id="start"> Please transcribe the data table(s) you see in this image. <br>スキャン画像の表に書かれた値を以下の空白セルに転記してください。</h1>
-
-	<!-- Question and Submission div -->
-	<div id="step1">
-		<h5>First estimate the number of columns (of both text and numbers) in the table below. <br>
-			以下の表の列数（文字列と数値の両方について）を数えてください。
-		<br>
-		Add extra columns if in doubt, and also add an extra final column for your comments. <br>
-		不確かな場合には列数を余分に数え、さらに、コメントを記入するための列を列数に加えて下さい。</h5>
-		<span class="label label-info"><i class="icon icon-bullhorn"></i>Note:</span> Type the number of columns here (and an empty table will then appear): <br>
-		列数をここに記入してください（空の表が表示されます）。
-		<input id="nColumns">
-		</input>
-		<button id="btnNcolumns" class="btn btn-submit">
-			Next
-		</button>
-	</div>
-	<!-- End of Question and Submission div -->
-	<div id="step2">
-		<h5>Transcribe the table shown in the scanned image into the empty cells below. <br>
-			この画像の表のデータを転記してください。
-		<br>
-		(and choose 'Submit transcription' 入力完了後に「転記結果の提出 when finished 」をクリックしてください。)</h5>
-		<div class="handsontable" id="data-table"></div>
-		<button class="btn btn-submit" style="margin-top:5px;">
-			Submit transcription /「転記結果の提出
-		</button>
-	</div>
-
+<div class="row skeleton" id="transcription">
+    <!-- The image map column -->
+    <div class="row">
+        <div id="map"></div>
+    </div>
+    <!-- End of image map column -->
+    <div class="row">
+        <div class="btn-group">
+            <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal"><i
+                    class="glyphicon glyphicon-eye-open"></i> Tutorial
+            </button>
+            <a class="btn btn-info btn-xs" id="imgLink" target="_blank" data-toggle="tooltip" data-placement="top"
+               title="Opens in a new window" href="http://community.micropasts.org/category/crowdsourcing-support"><i
+                    class="glyphicon glyphicon-book"></i> Community Help</a>
+        </div>
+    </div>
+    <!-- The transcribe section using html table -->
+    <div class="row">
+        <h4>Transcribe the catalogue into this table</h4>
+        <div id="riceTranscribe" class="handsontable"></div>
+        <button class="btn btn-success btn-answer" value='Yes'>Submit the transcription</button>
+        <!-- Feedback items for the user -->
+        <p>You are working now on task: <span id="task-id" class="label label-warning">#</span></p>
+        <p>You have completed: <span id="done" class="label label-info"></span> tasks from
+            <!-- Progress bar for the user -->
+            <span id="total" class="label label-inverse"></span></p>
+        <div class="progress progress-striped">
+            <div id="progress" rel="tooltip" title="#" class="progress-bar" role="progressbar" style="width: 0%;"></div>
+        </div>
+        <!-- End of feedback row -->
+    </div>
+    <!-- End of the transcribe section -->
 </div>
-
-<!-- Open Layers div -->
-<div id="photo-link">
-	<!-- Photo div -->
-	<div id="imgHolder">
-		<div class="btn-group">
-			<a class="btn btn-info btn-sm" href="#" data-toggle="modal" title="Opens in a new window" data-target="#myModal"><i class="glyphicon glyphicon-eye-open"></i> Tutorial</a>
-			<a class="btn btn-info btn-sm" rel="tooltip" target="_blank" data-toggle="tooltip" data-placement="top" title="Opens in a new window"  href="http://community.micropasts.org/category/crowd-sourcing-support"><i class="glyphicon glyphicon-book"></i> Community Help</a>
-			<a id="raw" href="" class="btn btn-sm btn-info fancybox" ><i class="glyphicon glyphicon-picture"></i> Overlay</a>
-			<a id="down" rel="tooltip" data-toggle="tooltip" data-placement="top" title="Only works for compliant browsers" download="" href="" class="btn btn-sm btn-info" ><i class="glyphicon glyphicon-download"></i> Download</a>
-			<a id="flickr" rel="tooltip" target="_blank" data-toggle="tooltip" data-placement="top" title="Opens in a new window" href="" class="btn btn-sm btn-info"><i class="icon icon-flickr"></i> View on Flickr</a>
-		</div>
-		<!-- Container for zoomer -->
-		<div id="imgContainer"></div>
-		<div id="taskImg"></div>
-		<!-- Feedback for user -->
-		<p>
-			<br>
-			You are now working on task (現在作業中のタスク): <span id="task-id" class="label label-warning">#</span>
-		</p>
-		<p>
-			You have completed (完了したタスク): <span id="done" class="label label-info"></span> tasks from (のうち) <!-- Progress bar for the user -->
-			<span id="total" class="label label-inverse"></span>
-		</p>
-		<div class="progress progress-striped col-md-7">
-			<div id="progress" rel="tooltip" title="#" class="progress-bar" role="progressbar" style="width: 0%;"></div>
-		</div><!-- End of feedback row -->
-	</div><!-- End of Photo DIV (columnt) -->
-</div>
-</div><!-- End of Skeleton Row -->
+<!-- End of DOM Skeleton row -->
 
 <!-- Modal start -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<!-- Stepped modal body -->
-			<div class="modal-header">
-				<h3 class="lead">Japanese Rice Statistics Tutorial <br>日本の稲作統計転記チュートリアル</h3>
-			</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal header -->
+            <div class="modal-header">
+                <h3>Transcribing the Worthington Smith notebooks</h3>
 
-			<div id="0" class="modal-body" style="display:none">
+            </div>
 
-				<p>
-					This application is very simple. When you
-					participate, the platform will load a scanned table of statistical
-					data referring to rice production across Japan in the years 1883-1954. Once the image has been loaded, you will be asked
-					to transcribe the contents of the table(s) you see in the image. Any further
-					information can be placed in the top row, the bottom row or an
-					extra final column. If you can read and write Japanese then please add these headings (with an English translation alongside if you can). If you cannot read Japanese then transcription of the numerical data will still be very useful (as the headings are standardised and we can add them later). 
-					An example portion of a statistical table is provided below, 
-					along with brief description of the contents of the Japanese headings.
-				</p>
-				<p>
-					データの転記作業はシンプルです。このプロジェクトに参加すると、このシステムは1883年から1954年にかけての日本における稲作統計表のスキャン画像を読み込みます。画像が読み込まれると、画像にある統計表の内容を転記するように表示されます。統計表の最上段、最下段あるいは先頭列には、いくらかの情報が含まれていることがあります。日本語を書くことができる方は、そうした情報の（可能であれば英訳の併記も含め）も追加してください。日本語を読むことができない方であっても、数値データの転記も我々にとっては有益なものとなります（ヘッダー情報に関しては後に正規化して付け加えます）。以下には、内容に関する簡単な記述例として統計表の一部が例として示されています。
-				</p>
+            <!-- Step 1 of the tutorial -->
+            <div id="0" class="modal-body" style="display:none">
+                <p>This application is very simple and is a transcription based exercise. Our team would like you to
+                write down exactly what you see on each line of the notepad into the table displayed below the zooming image.</p>
 
-				<img src="http://micropasts-other.s3.amazonaws.com/other/japanrice_example.png" class="img-polaroid"
-				alt="An example of a rice production table" width="300" height="215"/>
-			</div>
-			<div id="1" class="modal-body" style="display:none">
-				<p>
-					Some further bits of guidance as you transcribe:
-					<ul>
-						<li>
-							The number of rows will expand as you type. Please do not worry if you leave a blank final row.
-							If a word is hard to decipher, do you best to identify it
-							and make a comment in your extra column to note
-							the problem. We have also split each sheet into two (with ovrelap), 
-							so do not be surprised if you see a lack of headings and ignore any numbers/lines that are partially cut off.
-						</li>
-						<li>
-							If you find it easier, you can transcribe into
-							an offline spreadsheet and then copy-and-paste
-							the results into the online table in one go. However, bear in mind that
-							a delay in submitting the online table
-							might then mean that other
-							contributors complete this task before you do and
-							thereby make your efforts unnecessary!
-						</li>
-					</ul>
-				</p>
-				<p>転記の際の注意事項:
-					<ul>
-						<li>行数については、入力を進めていくと自動的に追加されます。最終行が空白のままであることは問題ありません。判別が困難な文字や数字が合った場合には、最も妥当な判断で入力し、そうした問題に関するコメントを余分に用意した列に記入してください。統計表は二つに重ねて分割していますので、ヘッダー行が欠損していても驚かず、数値や行が切れてしまっていても無視して作業をおこなってください。</li>
-						<li>簡単であると考えられる場合には、オフラインの表計算ソフトを使って転記し、その結果をコピー・アンド・ペーストでオンライン・テーブルに貼り付けることができます。しかしながら、データの提出が遅れた場合、他の協力者の方がそのタスクを完了させてしまっているかもしれません。その場合には、努力は水の泡となります！</li>
-					</ul>
-				</p>
-			</div>
-			<!-- End of stepped modal body -->
-			<!-- Modal footer -->
-			<div class="modal-footer">
-				<a id="prevBtn" href="#" onclick="showStep('prev')" class="btn btn-default">Previous</a>
-				<a id="nextBtn" href="#" onclick="showStep('next')" class="btn btn-success">Next</a>
-				<button id="startContrib" data-dismiss="modal" class="btn btn-primary" style="display:none">
-					<i class="glyphicon glyphicon-thumbs-up"></i> Let's start!</a>
-			</div>
-		</div>
-	</div>
+                <p>Each entry in the note book is similar, 7 fields:</p>
+                <ul class="list-group">
+                    <li>Entry number</li>
+                    <li>Date of discovery</li>
+                    <li>Description of the discovery</li>
+                    <li>Length in inches</li>
+                    <li>Width in inches</li>
+                    <li>Weight in pounds</li>
+                    <li>Weight in ounces</li>
+                </ul>
+            </div>
+
+            <!-- Step 2 of the tutorial -->
+            <div id="1" class="modal-body" style="display:none">
+                <p>
+                    The image that we would like you to transcribe for us, starts at the top of the page and can be scrolled
+                    up and down, and zoomed in and out to read more of the contents. We hope that this interface allows you to
+                    work on the image concurrently with the text table below the image container.
+                </p>
+
+                <p>
+                    The table starts off with just 6 rows but will add another automatically when you get to the bottom, up
+                    to a maximum of 20 rows.
+                </p>
+
+                <p>
+                    The image is contained within an interface that allows you to zoom in and out, and even go full screen.
+                    Try the controls out, you won't break anything!
+                </p>
+            </div>
+
+            <!-- Step 2 of the tutorial -->
+            <div id="2" class="modal-body" style="display:none">
+                <p>
+                    As in the Bronze Age index transcription applications, some abbreviations are used. If you see the sign in the image below, it means 'ditto'.
+                    So please enter the same as the previous line's entry.
+                </p>
+                <img src="http://micropasts.org/wp-content/uploads/2015/03/MicroPasts-·-Project-Transcribing-the-Worthington-George-Smith-catalogue-·-Contribute.png">
+                <p>
+                    As this is an antiquarian notebook, the measurements are not metric and are in imperial measures. When transcribing, do not
+                    attempt to convert the weights or dimensions. Instead please just enter as seen. If you see 3 1/4, then please enter as such.
+                    The project team will do the conversions.
+                </p>
+            </div>
+            <!-- End of stepped modal body -->
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <a id="prevBtn" href="#" onclick="showStep('prev')" class="btn btn-default">Previous</a>
+                <a id="nextBtn" href="#" onclick="showStep('next')" class="btn btn-success">Next</a>
+                <button id="startContrib" data-dismiss="modal" class="btn btn-primary" style="display:none"/></button>
+                <i class="glyphicon glyphicon-thumbs-up"></i> Let's start!</a>
+            </div>
+        </div>
+    </div>
 </div>
-<!-- Modal end -->
 
-<!-- Further scripts -->
+
+
+<!-- Client side scripts -->
 <script>
-	var step = -1;
-	function showStep(action) {
-		$("#" + step).hide();
-		if (action == 'next') {
-			step = step + 1;
-		}
-		if (action == 'prev') {
-			step = step - 1;
-		}
-		if (step == 0) {
-			$("#prevBtn").hide();
-		} else {
-			$("#prevBtn").show();
-		}
-
-		if (step == 1) {
-			$("#nextBtn").hide();
-			$("#startContrib").show();
-		}
-		$("#" + step).show();
-	}
-
-	showStep('next');
-	$("#modal").modal('show'); 
+// Quick fix for IE8
+Modernizr.load({
+  test: window.JSON,
+  nope: '/static/js/vendor/json2.min.js'
+});
 </script>
 
-<!-- Modernizer -->
-<script>
-	// fix for IE8
-	Modernizr.load({
-		test : window.JSON,
-		nope : '/static/js/vendor/json2.min.js'
-	}); 
+<!-- Step through modals -->
+<script type="text/javascript">
+    var step = -1;
+    function showStep(action) {
+        $("#" + step).hide();
+        if (action == 'next') {
+            step = step + 1;
+        }
+        if (action == 'prev') {
+            step = step - 1;
+        }
+        if (step == 0) {
+            $("#prevBtn").hide();
+        }
+        else {
+            $("#prevBtn").show();
+        }
+
+        if (step == 2) {
+            $("#nextBtn").hide();
+            $("#startContrib").show();
+        }
+        $("#" + step).show();
+    }
+
+    showStep('next');
+    $("#modal").modal('show');
 </script>
 
-<!-- Main Pybossa functions -->
+
+
+<!-- Load user progress -->
 <script>
-	function loadUserProgress() {
-		pybossa.userProgress('japanrice').done(function(data) {
-			console.log(data);
-			console.log("Total answers done for user: " + data.done);
-			if ((data.done == 1) && ($.cookie('surveyricepops1') === undefined)) {
-				$("#survey").modal('show');
-				$.cookie('surveyricepops1', 'shown', {
-					path : '/'
-				});
-			}
-			if ((data.done == 25) && ($.cookie('survey25ricepops1') === undefined)) {
-				$("#survey25").modal('show');
-				$.cookie('survey25ricepops1', 'shown', {
-					path : '/'
-				});
-			}
-			var pct = Math.round((data.done * 100) / data.total);
-			$("#progress").css("width", pct.toString() + "%");
-			$("#progress").attr("title", pct.toString() + "% completed!");
-			$("#progress").tooltip({
-				'placement' : 'left'
-			});
-			$("#total").text(data.total);
-			$("#done").text(data.done);
-		});
-	}
-</script>
+    function loadUserProgress() {
+        pybossa.userProgress('japanrice').done(function(data){
+            console.log(data);
+            console.log("Total answers done for user: " + data.done);
+            var pct = Math.round((data.done*100)/data.total);
+            $("#progress").css("width", pct.toString() +"%");
+            $("#progress").attr("title", pct.toString() + "% completed!");
+            $("#progress").tooltip({'placement': 'left'});
+            $("#total").text(data.total);
+            $("#done").text(data.done);
+            $('a[rel]').tooltip({'placement': 'left'});
+        });
+    }
+    pybossa.taskLoaded(function(task, deferred) {
+        if ( ! $.isEmptyObject(task) ) {
+            loadUserProgress();
+            deferred.resolve(task);
+        } else {
+            deferred.resolve(task);
+        }
+    });
+      $(window).resize(function(){
+        console.log('Window resized');
+      });
 
-<script>
-	pybossa.taskLoaded(function(task, deferred) {
-		if (!$.isEmptyObject(task)) {
-			var img = $('<img />');
-			var div_map = $('<div/>');
+    pybossa.presentTask(function(task, deferred) {
+        if ( !$.isEmptyObject(task) ) {
+        $("#question").html(task.info.question);
+        $('#task-id').html(task.id);
+        // Map views always need a projection.  Here we just want to map image
+        // coordinates directly to map coordinates, so we create a projection that uses
+        // the image extent in pixels.
+        var extent = [0, 0, 4000, 6016];
+        var projection = new ol.proj.Projection({
+          code: '',
+          units: 'pixels',
+          extent: extent
+        });
 
-			div_map.css("height", "390px");
-			div_map.css("width", "600px");
-			div_map.css("background", "#000");
+        var map = new ol.Map({
+          controls: ol.control.defaults().extend([
+            new ol.control.ZoomSlider(),
+            new ol.control.FullScreen()
+          ]),
+          layers: [
+            new ol.layer.Image({
+              source: new ol.source.ImageStatic({
+                attributions: [
+                  new ol.Attribution({
+                    html: '&copy; The Trustees of the British Museum'
+                  })
+                ],
+                url: task.info.url_b,
+                projection: projection,
+                imageExtent: extent
+              })
+            })
+          ],
+          target: 'map',
+          view: new ol.View({
+            projection: projection,
+            center: [1800, 5016],
+            //ol.extent.getCenter(extent),
+            zoom: 3,
+            minZoom: 1,
+            maxZoom: 5
+          })
 
-			var extent = new OpenLayers.Bounds();
-			extent.extend(new OpenLayers.LonLat(1.758939, 58.672231).transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection('EPSG:900913')));
+        });
 
-			extent.extend(new OpenLayers.LonLat(-6.99745, 49.96112).transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection('EPSG:900913')));
+        $('.ol-zoom-in, .ol-zoom-out').tooltip({
+            placement: 'right'
+        });
 
-			$("#imgContainer").append(div_map);
-			div_map.attr("id", "img_" + task.id);
+        $('.ol-full-screen').tooltip({
+            placement: 'left'
+        });
 
-			task.pixelProjection = new ol.proj.Projection({
-				code : 'pixel',
-				units : 'pixels',
-				extent : [0, 0, 1024, 720]
-			});
+        $('.ol-rotate-reset, .ol-attribution button[title]').tooltip({
+            placement: 'left'
+        });
+                var data = [[]];
+                var config = {
+                data: data,
+                minRows: 6,
+                minCols: 7,
+                minSpareRows: 1,
+                minSpareCols: 0,
+                maxRows: 20,
+                autoWrapRow: true,
+                autoWrapCol: true,
+                autoColumnSize: true,
+                colHeaders: ['ID', 'Date', 'Description', 'Length (in inches)', 'Width (in inches)', 'Weight (in pounds.)', 'Weight (in ounces)'],
+                contextMenu: ['row_below', 'remove_row', 'undo', 'redo'],
+                stretchH: 'all'
+                };
+                $("#riceTranscribe").handsontable(config);
 
-			task.map_img = new ol.Map({
-				//interactions: ol.interaction.defaults().extend([task.select, task.modify]),
-				layers : [new ol.layer.Image({
-					source : new ol.source.ImageStatic({
-						url : task.info.url_o,
-						imageSize : [1024, 720],
-						projection : task.pixelProjection,
-						imageExtent : task.pixelProjection.getExtent()
-					})
-				})],
-				renderer : 'canvas',
-				target : 'img_' + task.id,
-				view : new ol.View({
-					projection : task.pixelProjection,
-					center : ol.extent.getCenter(task.pixelProjection.getExtent()),
-					zoom : 1.0
-				})
-			});
-			div_map.css("display", "none");
 
-			// load image from flickr
-			var img = $('<img />');
-			img.attr("id", "img_task_" + task.id);
-			img.load(function() {
-				// continue as soon as the image is loaded
-				deferred.resolve(task);
-			});
-			img.attr('src', task.info.url_o);
-			img.attr('width', '390px');
-			img.attr('height', '600px');
-			img.addClass('img-polaroid');
-			img.css("cursor", "zoom-in");
-			task.info.image = img;
+                $('.btn-answer').off('click').on('click', function(evt) {
+                evt.preventDefault();
+                var answer = $(evt.target).attr("value");
+                if (typeof answer != 'undefined') {
+                    task.answer = $("#transcription").serializeJSON();
+                    console.log(task.answer);
+                    var handsontable = $("riceTranscribe").data('handsontable');
+                    var data = handsontable.getData();
+                    console.log(data);
+                    task.answer = data;
+                    console.log(task.answer);
+                    pybossa.saveTask(task.id, task.answer).done(function() {
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $("#success").fadeIn(500).fadeOut(500);
+                        $("#loading").fadeIn(500).fadeOut(500);
+                        map.setTarget(null);
+                        deferred.resolve();
+                    });
+                } else {
+                    $("#error").show();
+                }
+            });
+            $("#loading").hide();
+        } else {
+            $(".skeleton").hide();
+            $("#loading").hide();
+            $("#finish").fadeIn(500);
+        }
+    });
+    pybossa.run('japanrice');
+    </script>
 
-		} else {
-			deferred.resolve(task);
-		}
-
-	}); 
-</script>
-<script>
-	pybossa.presentTask(function(task, deferred) {
-		if (!$.isEmptyObject(task)) {
-			loadUserProgress();
-			$("#step1").show();
-			$("#step2").hide();
-			$("#viewport_" + task.id).show();
-			$("#nColumns").val("");
-			$("a#raw").attr("href", task.info.url_o);
-			$("a#flickr").attr("href", task.info.link);
-			$("a#down").attr("download", task.id);
-			$("a#down").attr("href", task.info.url_o);
-			$(".fancybox").fancybox();
-			$('#imgLink').tooltip();
-			$("#question").html(task.info.question);
-			$('#task-id').html(task.id);
-			$("#img_" + task.id).show();
-
-			$(".btn-submit").off('click').on('click', function() {
-				var btn = $(this).attr("id");
-				if (btn == "btnNcolumns") {
-					$("#step1").toggle();
-					$("#step2").toggle();
-					var nColumns = parseInt($("#nColumns").val());
-					if (nColumns != 0) {
-						$('#data-table').handsontable({
-							startRows : 1,
-							startCols : nColumns,
-							minSpareRows : 1,
-							colHeaders : true,
-							contextMenu : true
-						});
-					}
-					// No table, so load next page
-					else {
-						pybossa.saveTask(task.id, "noTable").done(function(data) {
-							$("#img_" + task.id).hide();
-							deferred.resolve();
-							$("#success").fadeIn();
-							setTimeout(function() {
-								$("#success").fadeOut()
-							}, 2000);
-						});
-					}
-				} else {
-					var handsontable = $("#data-table").data('handsontable');
-					var answer = handsontable.getData();
-					pybossa.saveTask(task.id, answer).done(function(data) {
-						$("#img_" + task.id).hide();
-						deferred.resolve();
-						$("#success").fadeIn(500).fadeOut(2500);
-					})
-				}
-			});
-		} else {
-			$(".skeleton").hide();
-			$("#loading").hide();
-			$("#finish").fadeIn(500);
-		}
-	});
-
-	if (Modernizr.borderradius) {
-		pybossa.run('japanrice');
-	} else {
-		$(".skeleton").hide();
-		$("#oldbrowser").show();
-	}
-</script>
+<style type="text/css">
+    #map {
+    background-color: black;
+    height: 300px;
+    }
+    #map:-moz-full-screen {
+    height: 100%;
+    }
+    #map:-webkit-full-screen {
+    height: 100%;
+    }
+    #map:-ms-fullscreen {
+    height: 100%;
+    }
+    #map:full-screen {
+    height: 100%;
+    }
+    .ol-rotate {
+    top: 3em;
+    }
+    #riceTranscribe {
+    width: 100%;
+    }
+    .btn-answer {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    }
+    .btn-group {
+    margin-bottom: 0px
+    }
+</style>
