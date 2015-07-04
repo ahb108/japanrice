@@ -361,7 +361,7 @@ task.
                 if (typeof answer != 'undefined') {
                     task.answer = $("#transcription").serializeJSON();
                     console.log(task.answer);
-                    var handsontable = $("#wgsTranscribe").data('handsontable');
+                    var handsontable = $("#data-table").data('handsontable');
                     var data = handsontable.getData();
                     console.log(data);
                     task.answer = data;
