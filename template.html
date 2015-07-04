@@ -359,14 +359,11 @@ task.
                 evt.preventDefault();
                 var answer = $(evt.target).attr("value");
                 if (typeof answer != 'undefined') {
-                    task.answer = $("#transcription").serializeJSON();
-                    console.log(task.answer);
+                    
+
                     var handsontable = $("#data-table").data('handsontable');
-                    var data = handsontable.getData();
-                    console.log(data);
-                    task.answer = data;
-                    console.log(task.answer);
-                    pybossa.saveTask(task.id, task.answer).done(function() {
+                    var answer = handsontable.getData();
+                    pybossa.saveTask(task.id, answer).done(function() {
                         $("html, body").animate({ scrollTop: 0 }, "slow");
                         $("#success").fadeIn(500).fadeOut(500);
                         $("#loading").fadeIn(500).fadeOut(500);
