@@ -355,9 +355,11 @@ task.
                 };
                 $("#data-table").handsontable(config);
                 
-                $('.btn-answer').off('click').on('click', function(evt) {
-                var btn = $(this).attr("id");
-                if (typeof answer != 'undefined') {
+			$(".btn-submit").off('click').on('click', function() {
+				var btn = $(this).attr("id");
+				if (btn == "btnNcolumns") {
+					var answer = handsontable.getData();
+				} else {
                     var handsontable = $("#data-table").data('handsontable');
                     var answer = handsontable.getData();
                     pybossa.saveTask(task.id, answer).done(function() {
@@ -367,8 +369,6 @@ task.
                         map.setTarget(null);
                         deferred.resolve();
                     });
-                } else {
-                    $("#error").show();
                 }
             });
             $("#loading").hide();   
